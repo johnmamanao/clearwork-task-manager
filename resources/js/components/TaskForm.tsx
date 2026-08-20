@@ -44,6 +44,12 @@ export function TaskForm({ task, open, onClose, onSave }: Props) {
 
     const submit = async (event: FormEvent) => {
         event.preventDefault();
+
+        if (!form.due_date) {
+            setErrors((current) => ({ ...current, due_date: ['Please choose a due date.'] }));
+            return;
+        }
+
         setSaving(true);
         try {
             await onSave(form);
@@ -103,7 +109,7 @@ export function TaskForm({ task, open, onClose, onSave }: Props) {
                         </div>
                     </fieldset>
                 </div>
-                <label>Due date
+                <label><span className="field-heading">Due date <span>Required</span></span>
                     <DatePicker value={form.due_date} onChange={(value) => set('due_date', value)} />
                     {errors.due_date && <small className="field-error">{errors.due_date[0]}</small>}
                 </label>

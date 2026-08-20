@@ -53,7 +53,7 @@ class TaskApiTest extends TestCase
             'status' => 'unknown',
             'priority' => 'urgent',
         ])->assertUnprocessable()
-            ->assertJsonValidationErrors(['title', 'status', 'priority']);
+            ->assertJsonValidationErrors(['title', 'status', 'priority', 'due_date']);
     }
 
     public function test_it_updates_a_task_partially(): void
