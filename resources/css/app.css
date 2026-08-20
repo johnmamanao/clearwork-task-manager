@@ -70,7 +70,7 @@ main.shell { height: calc(100dvh - 64px); min-height: 0; display: flex; flex-dir
 .task-card:hover { border-color: #111; }
 .complete-toggle { width: 22px; height: 22px; display: grid; place-items: center; border: 1.5px solid #999; border-radius: 5px; background: white; color: white; padding: 2px; }
 .complete-toggle:hover { border-color: #111; }
-.is-complete .complete-toggle { border-color: var(--green); background: var(--green); }
+.is-complete .complete-toggle { border-color: #111; background: #111; }
 .task-content { min-width: 0; }
 .task-title-row { display: flex; align-items: center; gap: 9px; }
 .task-title-row h3 { margin: 0; min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; font-size: 13px; line-height: 1.5; letter-spacing: -.01em; }
