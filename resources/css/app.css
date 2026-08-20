@@ -11,6 +11,11 @@
     --line: #d8d8d5;
     --soft: #f2f2f0;
     --surface: #fff;
+    --green: #157a59;
+    --blue: #315f9f;
+    --red: #b83247;
+    --amber: #966500;
+    --teal: #287066;
 }
 
 * { box-sizing: border-box; }
@@ -65,7 +70,7 @@ main.shell { height: calc(100dvh - 64px); min-height: 0; display: flex; flex-dir
 .task-card:hover { border-color: #111; }
 .complete-toggle { width: 22px; height: 22px; display: grid; place-items: center; border: 1.5px solid #999; border-radius: 5px; background: white; color: white; padding: 2px; }
 .complete-toggle:hover { border-color: #111; }
-.is-complete .complete-toggle { border-color: #111; background: #111; }
+.is-complete .complete-toggle { border-color: var(--green); background: var(--green); }
 .task-content { min-width: 0; }
 .task-title-row { display: flex; align-items: center; gap: 9px; }
 .task-title-row h3 { margin: 0; min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; font-size: 13px; line-height: 1.5; letter-spacing: -.01em; }
@@ -73,14 +78,16 @@ main.shell { height: calc(100dvh - 64px); min-height: 0; display: flex; flex-dir
 .is-complete h3 { color: #888; text-decoration: line-through; }
 .is-complete .task-content > p { color: #aaa; }
 .priority { border: 1px solid #aaa; border-radius: 99px; padding: 2px 6px; color: #111; background: white; font-size: 8px; text-transform: uppercase; letter-spacing: .09em; font-weight: 800; }
-.priority-high { color: white; background: #111; border-color: #111; }
-.priority-medium { background: #ddd; border-color: #bbb; }
-.priority-low { background: white; }
+.priority-high { color: var(--red); background: #fff0f2; border-color: #e9aab4; }
+.priority-medium { color: var(--amber); background: #fff6dc; border-color: #e4ca84; }
+.priority-low { color: var(--teal); background: #eaf6f3; border-color: #a9d3ca; }
 .task-meta { display: flex; align-items: center; gap: 12px; margin-top: 8px; }
 .status { display: inline-flex; align-items: center; gap: 5px; color: #555; font-size: 9px; font-weight: 800; }
 .status::before { content: ''; width: 5px; height: 5px; border-radius: 50%; background: #999; }
-.status-in_progress::before { background: #444; }
-.status-completed::before { background: #111; }
+.status-in_progress { color: var(--blue); }
+.status-in_progress::before { background: var(--blue); }
+.status-completed { color: var(--green); }
+.status-completed::before { background: var(--green); }
 .due-date { display: inline-flex; align-items: center; gap: 4px; color: #777; font-size: 9px; }
 .due-date svg { width: 12px; height: 12px; }
 .card-actions { display: flex; opacity: 0; transition: opacity .15s; }
