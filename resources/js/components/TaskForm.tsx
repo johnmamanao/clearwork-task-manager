@@ -73,20 +73,34 @@ export function TaskForm({ task, open, onClose, onSave }: Props) {
                     {errors.description && <small className="field-error">{errors.description[0]}</small>}
                 </label>
                 <div className="form-grid">
-                    <label>Status
-                        <select value={form.status} onChange={(event) => set('status', event.target.value as TaskInput['status'])}>
-                            <option value="pending">To do</option>
-                            <option value="in_progress">In progress</option>
-                            <option value="completed">Completed</option>
-                        </select>
-                    </label>
-                    <label>Priority
-                        <select value={form.priority} onChange={(event) => set('priority', event.target.value as TaskInput['priority'])}>
-                            <option value="low">Low</option>
-                            <option value="medium">Medium</option>
-                            <option value="high">High</option>
-                        </select>
-                    </label>
+                    <fieldset className="choice-field">
+                        <legend>Status</legend>
+                        <div className="choice-group">
+                            {([
+                                ['pending', 'To do'],
+                                ['in_progress', 'In progress'],
+                                ['completed', 'Done'],
+                            ] as const).map(([value, label]) => <button
+                                key={value}
+                                type="button"
+                                className={form.status === value ? 'choice-option active' : 'choice-option'}
+                                aria-pressed={form.status === value}
+                                onClick={() => set('status', value)}
+                            ><span />{label}</button>)}
+                        </div>
+                    </fieldset>
+                    <fieldset className="choice-field">
+                        <legend>Priority</legend>
+                        <div className="choice-group">
+                            {(['low', 'medium', 'high'] as const).map((value) => <button
+                                key={value}
+                                type="button"
+                                className={form.priority === value ? 'choice-option active' : 'choice-option'}
+                                aria-pressed={form.priority === value}
+                                onClick={() => set('priority', value)}
+                            ><span />{value}</button>)}
+                        </div>
+                    </fieldset>
                 </div>
                 <label>Due date
                     <input type="date" value={form.due_date} onChange={(event) => set('due_date', event.target.value)} />
