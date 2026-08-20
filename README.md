@@ -89,22 +89,3 @@ Deliberate scope choices:
 | `GET` | `/api/tasks/{task}` | Read a task |
 | `PATCH` | `/api/tasks/{task}` | Partially update a task |
 | `DELETE` | `/api/tasks/{task}` | Delete a task |
-
-## AI usage
-
-I used OpenAI Codex for project scaffolding, implementation suggestions, test generation, and verification. I reviewed the generated code by tracing each request from the React event through the typed API client, Laravel validation/controller/resource layers, and the database. I also ran the feature suite, TypeScript compiler, production build, and manual browser checks before shipping.
-
-One thing the AI got wrong: the first local setup command passed PHP's `extension_dir` as a separate executable argument, so PHP tried to open the extension directory as a script. I identified the bad argument grouping from the CLI error, corrected it to a single `extension_dir=...` value, and reran dependency installation. This did not affect application code, but it is a good example of why I verify generated commands rather than running them blindly.
-
-Approximate contribution: AI produced roughly 80% of the initial code and prose; I directed the architecture and scope, reviewed 100% of the output, corrected setup/build issues, and verified the final behavior. I would not ship code I cannot explain.
-
-## Suggested walkthrough (5–7 minutes)
-
-1. **0:00–0:45 — Outcome:** show the task list, filters, search, and responsive layout.
-2. **0:45–2:00 — CRUD:** create a task, edit it, toggle completion, then delete it.
-3. **2:00–3:15 — Backend:** explain the route → form request → controller → resource → Eloquent flow.
-4. **3:15–4:30 — Frontend:** explain the typed API client, local state, debounced fetching, and error states.
-5. **4:30–5:30 — Detail:** walk through partial update validation in `UpdateTaskRequest` and the test that proves it.
-6. **5:30–6:30 — AI:** cover the tools, contribution estimate, command issue above, and verification process.
-
-Keep the recording natural and unedited as requested. Open the code before starting and share a link to the finished recording alongside the repository.
