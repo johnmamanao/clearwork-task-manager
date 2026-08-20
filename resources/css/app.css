@@ -105,7 +105,8 @@ main.shell { height: calc(100dvh - 64px); min-height: 0; display: flex; flex-dir
 .modal h2, .confirm-dialog h2 { margin: 4px 0 0; font-size: 20px; letter-spacing: -.035em; }
 .modal form { display: grid; gap: 15px; }
 .modal label { display: grid; gap: 6px; color: #333; font-size: 10px; font-weight: 800; text-transform: uppercase; letter-spacing: .05em; }
-.modal label > span { color: #111; }
+.field-heading { display: flex; align-items: center; justify-content: space-between; color: #333; }
+.field-heading > span { padding: 2px 5px; color: #555; background: #eee; border: 1px solid #ccc; border-radius: 99px; font-size: 7px; letter-spacing: .08em; }
 .modal input, .modal textarea, .modal select { width: 100%; border: 1px solid #aaa; border-radius: 6px; outline: 0; padding: 10px 11px; color: #111; background: white; font-size: 12px; font-weight: 500; resize: vertical; }
 .modal input:focus, .modal textarea:focus, .modal select:focus { border-color: #111; box-shadow: 0 0 0 2px #ddd; }
 .form-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }

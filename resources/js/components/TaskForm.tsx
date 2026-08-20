@@ -64,8 +64,8 @@ export function TaskForm({ task, open, onClose, onSave }: Props) {
                 <button className="icon-button" onClick={onClose} aria-label="Close dialog"><CloseIcon /></button>
             </div>
             <form onSubmit={submit}>
-                <label>Title <span>*</span>
-                    <input autoFocus value={form.title} onChange={(event) => set('title', event.target.value)} placeholder="e.g. Prepare project demo" />
+                <label><span className="field-heading">Title <span>Required</span></span>
+                    <input required autoFocus value={form.title} onChange={(event) => set('title', event.target.value)} placeholder="e.g. Prepare project demo" />
                     {errors.title && <small className="field-error">{errors.title[0]}</small>}
                 </label>
                 <label>Description
