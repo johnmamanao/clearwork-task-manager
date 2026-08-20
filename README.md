@@ -6,30 +6,30 @@ A small, focused task manager built for the SmartView Media full-stack technical
 
 - Laravel 13 / PHP 8.3+
 - React 19 with strict TypeScript
-- SQLite
+- MySQL 8+
 - Vite 8
 - PHPUnit feature tests
 
 ## Run locally
 
-Requirements: PHP 8.3+ with SQLite, Mbstring, OpenSSL, and Fileinfo extensions; Composer; Node.js 20+.
+Requirements: PHP 8.3+ with PDO MySQL, Mbstring, OpenSSL, and Fileinfo extensions; Composer; Node.js 20+; MySQL 8+.
 
 ```bash
 composer install
 cp .env.example .env
+# Windows PowerShell: Copy-Item .env.example .env
 php artisan key:generate
 
-# macOS/Linux
-touch database/database.sqlite
-
-# Windows PowerShell
-New-Item database/database.sqlite -ItemType File -Force
+# Create the MySQL database (you will be prompted for the root password)
+mysql -u root -p -e "CREATE DATABASE clearwork CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;"
 
 php artisan migrate --seed
 npm install
 npm run build
 php artisan serve
 ```
+
+If your local MySQL username, password, host, or port differs, update the corresponding `DB_*` values in `.env` before running the migration.
 
 Open `http://127.0.0.1:8000`. For frontend hot reload, use `npm run dev` in a second terminal instead of `npm run build`.
 
@@ -43,13 +43,13 @@ npm run build
 
 ## Why it is built this way
 
-The frontend and API live in one repository so the reviewer has a one-command Laravel app and no CORS or multi-service setup. SQLite keeps the assessment zero-config while still exercising real database migrations and Eloquent.
+The frontend and API live in one repository so the reviewer has a straightforward Laravel app and no CORS or multi-service setup. MySQL is the application database, matching a typical production Laravel stack. PHPUnit uses an isolated in-memory SQLite database only during automated tests, keeping the suite fast and preventing test data from touching a developer's MySQL database.
 
 The backend keeps transport concerns separate: form requests own validation, the resource defines the JSON contract, and the controller stays focused on querying and persistence. The UI uses a small typed API boundary and focused components rather than adding a state-management library for a module of this size. Search is debounced, mutations return the canonical server model, destructive actions require confirmation, and API validation is shown at field level.
 
 Deliberate scope choices:
 
-- Status and priority remain constrained strings instead of database enums, keeping the SQLite schema portable while validation enforces the allowed values.
+- Status and priority remain constrained strings instead of database enums. This keeps schema changes simple while Laravel validation enforces the allowed values.
 - The API returns all matching tasks because the assessment dataset is small. Pagination would be the next change at production scale.
 - There is no authentication because the requested scope is a standalone CRUD module.
 
