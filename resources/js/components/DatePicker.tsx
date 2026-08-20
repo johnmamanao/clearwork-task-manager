@@ -46,7 +46,7 @@ export function DatePicker({ value, onChange }: Props) {
         </Popover.Trigger>
 
         <Popover.Portal>
-            <Popover.Content className="calendar-popover" side="bottom" align="start" sideOffset={7} collisionPadding={16} role="dialog" aria-label="Choose due date">
+            <Popover.Content className="calendar-popover" side="bottom" align="end" sideOffset={7} collisionPadding={16} role="dialog" aria-label="Choose due date">
                 <DayPicker
                     mode="single"
                     selected={selected ?? undefined}
