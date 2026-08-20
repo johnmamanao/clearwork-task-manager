@@ -1,4 +1,5 @@
-import { useEffect, useRef, useState } from 'react';
+import { useState } from 'react';
+import * as Popover from '@radix-ui/react-popover';
 import { DayPicker } from 'react-day-picker';
 import { CalendarIcon } from './Icons';
 
@@ -25,27 +26,10 @@ export function DatePicker({ value, onChange }: Props) {
     const today = new Date();
     const [open, setOpen] = useState(false);
     const [visibleMonth, setVisibleMonth] = useState(() => selected ?? today);
-    const rootRef = useRef<HTMLDivElement>(null);
-
-    useEffect(() => {
-        const close = (event: PointerEvent) => {
-            if (!rootRef.current?.contains(event.target as Node)) setOpen(false);
-        };
-        const escape = (event: KeyboardEvent) => {
-            if (event.key === 'Escape') setOpen(false);
-        };
-
-        document.addEventListener('pointerdown', close);
-        document.addEventListener('keydown', escape);
-        return () => {
-            document.removeEventListener('pointerdown', close);
-            document.removeEventListener('keydown', escape);
-        };
-    }, []);
 
     const displayValue = selected
         ? new Intl.DateTimeFormat('en', { month: 'long', day: 'numeric', year: 'numeric' }).format(selected)
-        : 'Choose a date';
+        : 'Pick a date';
 
     const choose = (date: Date) => {
         onChange(toValue(date));
@@ -53,14 +37,16 @@ export function DatePicker({ value, onChange }: Props) {
         setOpen(false);
     };
 
-    return <div className="date-picker" ref={rootRef}>
-        <button type="button" className={open ? 'date-trigger open' : 'date-trigger'} onClick={() => setOpen((current) => !current)} aria-haspopup="dialog" aria-expanded={open}>
-            <span className={selected ? '' : 'placeholder'}>{displayValue}</span>
-            <CalendarIcon />
-        </button>
+    return <Popover.Root open={open} onOpenChange={setOpen}>
+        <Popover.Trigger asChild>
+            <button type="button" className={open ? 'date-trigger open' : 'date-trigger'} aria-label="Due date">
+                <span className={selected ? '' : 'placeholder'}>{displayValue}</span>
+                <CalendarIcon />
+            </button>
+        </Popover.Trigger>
 
-        {open && <div className="calendar-layer" role="presentation" onMouseDown={(event) => event.target === event.currentTarget && setOpen(false)}>
-            <section className="calendar-popover" role="dialog" aria-modal="true" aria-label="Choose due date">
+        <Popover.Portal>
+            <Popover.Content className="calendar-popover" side="bottom" align="start" sideOffset={7} collisionPadding={16} role="dialog" aria-label="Choose due date">
                 <DayPicker
                     mode="single"
                     selected={selected ?? undefined}
@@ -76,7 +62,7 @@ export function DatePicker({ value, onChange }: Props) {
                     <button type="button" onClick={() => { onChange(''); setOpen(false); }}>Clear</button>
                     <button type="button" onClick={() => choose(today)}>Today</button>
                 </footer>
-            </section>
-        </div>}
-    </div>;
+            </Popover.Content>
+        </Popover.Portal>
+    </Popover.Root>;
 }

@@ -8,6 +8,7 @@
         "typecheck": "tsc --noEmit"
     },
     "dependencies": {
+        "@radix-ui/react-popover": "^1.1.23",
         "@vitejs/plugin-react": "^5.0.0",
         "react": "^19.1.1",
         "react-day-picker": "^10.0.1",
