@@ -10,7 +10,32 @@ A small, focused task manager built for the SmartView Media full-stack technical
 - Vite 8
 - PHPUnit feature tests
 
-## Run locally
+## Quick start with Docker
+
+The only requirement is [Docker Desktop](https://www.docker.com/products/docker-desktop/). PHP, Composer, Node.js, and MySQL do not need to be installed separately.
+
+```bash
+git clone https://github.com/johnmamanao/clearwork-task-manager.git
+cd clearwork-task-manager
+docker compose up --build
+```
+
+Open `http://localhost:8000`. The first startup builds the React frontend, installs PHP dependencies, starts MySQL 8.4, runs the database migrations, and inserts sample tasks automatically.
+
+Stop the application with `Ctrl+C`, then remove the containers:
+
+```bash
+docker compose down
+```
+
+The MySQL data persists between runs. To intentionally reset it and reload fresh sample data:
+
+```bash
+docker compose down -v
+docker compose up --build
+```
+
+## Run without Docker
 
 Requirements: PHP 8.3+ with PDO MySQL, Mbstring, OpenSSL, and Fileinfo extensions; Composer; Node.js 20+; MySQL 8+.
 
@@ -44,6 +69,8 @@ npm run build
 ## Why it is built this way
 
 The frontend and API live in one repository so the reviewer has a straightforward Laravel app and no CORS or multi-service setup. MySQL is the application database, matching a typical production Laravel stack. PHPUnit uses an isolated in-memory SQLite database only during automated tests, keeping the suite fast and preventing test data from touching a developer's MySQL database.
+
+Docker Compose provides the reproducible review path: a multi-stage image installs Composer packages and compiles the React frontend, while the official MySQL image stores data in a named volume. The application waits for a healthy database, generates an ephemeral local application key, and runs repeat-safe migrations and seeding before serving requests.
 
 The backend keeps transport concerns separate: form requests own validation, the resource defines the JSON contract, and the controller stays focused on querying and persistence. The UI uses a small typed API boundary and focused components rather than adding a state-management library for a module of this size. Search is debounced, mutations return the canonical server model, destructive actions require confirmation, and API validation is shown at field level.
 

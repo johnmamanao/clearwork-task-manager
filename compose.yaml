@@ -1,0 +1,44 @@
+services:
+  app:
+    build:
+      context: .
+    ports:
+      - "8000:8000"
+    environment:
+      APP_NAME: Clearwork
+      APP_ENV: local
+      APP_DEBUG: "true"
+      APP_URL: http://localhost:8000
+      LOG_CHANNEL: stderr
+      DB_CONNECTION: mysql
+      DB_HOST: db
+      DB_PORT: "3306"
+      DB_DATABASE: clearwork
+      DB_USERNAME: clearwork
+      DB_PASSWORD: clearwork
+      SESSION_DRIVER: database
+      CACHE_STORE: database
+      QUEUE_CONNECTION: database
+    depends_on:
+      db:
+        condition: service_healthy
+        restart: true
+
+  db:
+    image: mysql:8.4
+    environment:
+      MYSQL_DATABASE: clearwork
+      MYSQL_USER: clearwork
+      MYSQL_PASSWORD: clearwork
+      MYSQL_ROOT_PASSWORD: local-root-password
+    volumes:
+      - mysql-data:/var/lib/mysql
+    healthcheck:
+      test: ["CMD-SHELL", "mysqladmin ping -h localhost -u root -p$$MYSQL_ROOT_PASSWORD --silent"]
+      interval: 5s
+      timeout: 5s
+      retries: 20
+      start_period: 20s
+
+volumes:
+  mysql-data:

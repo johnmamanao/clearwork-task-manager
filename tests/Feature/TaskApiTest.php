@@ -10,6 +10,14 @@ class TaskApiTest extends TestCase
 {
     use RefreshDatabase;
 
+    public function test_database_seeding_is_safe_to_run_more_than_once(): void
+    {
+        $this->seed();
+        $this->seed();
+
+        $this->assertDatabaseCount('tasks', 6);
+    }
+
     public function test_it_lists_tasks_and_supports_filters(): void
     {
         Task::factory()->create(['title' => 'Ship release', 'status' => 'pending']);

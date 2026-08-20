@@ -15,6 +15,8 @@ class DatabaseSeeder extends Seeder
      */
     public function run(): void
     {
-        Task::factory(6)->create();
+        if (Task::query()->doesntExist()) {
+            Task::factory(6)->create();
+        }
     }
 }
