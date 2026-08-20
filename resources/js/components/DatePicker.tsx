@@ -74,35 +74,37 @@ export function DatePicker({ value, onChange }: Props) {
             <CalendarIcon />
         </button>
 
-        {open && <section className="calendar-popover" role="dialog" aria-label="Choose due date">
-            <header className="calendar-header">
-                <div><span>{visibleMonth.toLocaleString('en', { month: 'long' })}</span><strong>{year}</strong></div>
-                <div>
-                    <button type="button" onClick={() => moveMonth(-1)} aria-label="Previous month">←</button>
-                    <button type="button" onClick={() => moveMonth(1)} aria-label="Next month">→</button>
+        {open && <div className="calendar-layer" role="presentation" onMouseDown={(event) => event.target === event.currentTarget && setOpen(false)}>
+            <section className="calendar-popover" role="dialog" aria-modal="true" aria-label="Choose due date">
+                <header className="calendar-header">
+                    <div><span>{visibleMonth.toLocaleString('en', { month: 'long' })}</span><strong>{year}</strong></div>
+                    <div>
+                        <button type="button" onClick={() => moveMonth(-1)} aria-label="Previous month">←</button>
+                        <button type="button" onClick={() => moveMonth(1)} aria-label="Next month">→</button>
+                    </div>
+                </header>
+                <div className="calendar-weekdays" aria-hidden="true">{weekDays.map((day) => <span key={day}>{day}</span>)}</div>
+                <div className="calendar-grid">
+                    {Array.from({ length: firstWeekday }, (_, index) => <span key={`blank-${index}`} />)}
+                    {Array.from({ length: daysInMonth }, (_, index) => {
+                        const date = new Date(year, month, index + 1);
+                        const isSelected = selected ? sameDay(date, selected) : false;
+                        const isToday = sameDay(date, today);
+                        return <button
+                            key={index + 1}
+                            type="button"
+                            className={`${isSelected ? 'selected ' : ''}${isToday ? 'today' : ''}`.trim()}
+                            onClick={() => choose(date)}
+                            aria-pressed={isSelected}
+                            aria-label={new Intl.DateTimeFormat('en', { dateStyle: 'full' }).format(date)}
+                        >{index + 1}</button>;
+                    })}
                 </div>
-            </header>
-            <div className="calendar-weekdays" aria-hidden="true">{weekDays.map((day) => <span key={day}>{day}</span>)}</div>
-            <div className="calendar-grid">
-                {Array.from({ length: firstWeekday }, (_, index) => <span key={`blank-${index}`} />)}
-                {Array.from({ length: daysInMonth }, (_, index) => {
-                    const date = new Date(year, month, index + 1);
-                    const isSelected = selected ? sameDay(date, selected) : false;
-                    const isToday = sameDay(date, today);
-                    return <button
-                        key={index + 1}
-                        type="button"
-                        className={`${isSelected ? 'selected ' : ''}${isToday ? 'today' : ''}`.trim()}
-                        onClick={() => choose(date)}
-                        aria-pressed={isSelected}
-                        aria-label={new Intl.DateTimeFormat('en', { dateStyle: 'full' }).format(date)}
-                    >{index + 1}</button>;
-                })}
-            </div>
-            <footer className="calendar-footer">
-                <button type="button" onClick={() => { onChange(''); setOpen(false); }}>Clear</button>
-                <button type="button" onClick={() => choose(today)}>Today</button>
-            </footer>
-        </section>}
+                <footer className="calendar-footer">
+                    <button type="button" onClick={() => { onChange(''); setOpen(false); }}>Clear</button>
+                    <button type="button" onClick={() => choose(today)}>Today</button>
+                </footer>
+            </section>
+        </div>}
     </div>;
 }
