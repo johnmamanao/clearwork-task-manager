@@ -1,6 +1,7 @@
 import { useEffect, useState, type FormEvent } from 'react';
 import { ApiError } from '../api';
 import type { Task, TaskInput, ValidationErrors } from '../types';
+import { DatePicker } from './DatePicker';
 import { CloseIcon } from './Icons';
 
 const emptyTask: TaskInput = {
@@ -103,7 +104,7 @@ export function TaskForm({ task, open, onClose, onSave }: Props) {
                     </fieldset>
                 </div>
                 <label>Due date
-                    <input type="date" value={form.due_date} onChange={(event) => set('due_date', event.target.value)} />
+                    <DatePicker value={form.due_date} onChange={(value) => set('due_date', value)} />
                     {errors.due_date && <small className="field-error">{errors.due_date[0]}</small>}
                 </label>
                 <div className="modal-actions">
