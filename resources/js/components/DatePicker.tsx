@@ -1,12 +1,11 @@
 import { useEffect, useRef, useState } from 'react';
+import { DayPicker } from 'react-day-picker';
 import { CalendarIcon } from './Icons';
 
 interface Props {
     value: string;
     onChange: (value: string) => void;
 }
-
-const weekDays = ['Su', 'Mo', 'Tu', 'We', 'Th', 'Fr', 'Sa'];
 
 function toDate(value: string): Date | null {
     if (!value) return null;
@@ -19,12 +18,6 @@ function toValue(date: Date): string {
     const month = String(date.getMonth() + 1).padStart(2, '0');
     const day = String(date.getDate()).padStart(2, '0');
     return `${year}-${month}-${day}`;
-}
-
-function sameDay(first: Date, second: Date): boolean {
-    return first.getFullYear() === second.getFullYear()
-        && first.getMonth() === second.getMonth()
-        && first.getDate() === second.getDate();
 }
 
 export function DatePicker({ value, onChange }: Props) {
@@ -50,17 +43,9 @@ export function DatePicker({ value, onChange }: Props) {
         };
     }, []);
 
-    const year = visibleMonth.getFullYear();
-    const month = visibleMonth.getMonth();
-    const firstWeekday = new Date(year, month, 1).getDay();
-    const daysInMonth = new Date(year, month + 1, 0).getDate();
     const displayValue = selected
         ? new Intl.DateTimeFormat('en', { month: 'long', day: 'numeric', year: 'numeric' }).format(selected)
         : 'Choose a date';
-
-    const moveMonth = (amount: number) => {
-        setVisibleMonth(new Date(year, month + amount, 1));
-    };
 
     const choose = (date: Date) => {
         onChange(toValue(date));
@@ -76,30 +61,17 @@ export function DatePicker({ value, onChange }: Props) {
 
         {open && <div className="calendar-layer" role="presentation" onMouseDown={(event) => event.target === event.currentTarget && setOpen(false)}>
             <section className="calendar-popover" role="dialog" aria-modal="true" aria-label="Choose due date">
-                <header className="calendar-header">
-                    <div><span>{visibleMonth.toLocaleString('en', { month: 'long' })}</span><strong>{year}</strong></div>
-                    <div>
-                        <button type="button" onClick={() => moveMonth(-1)} aria-label="Previous month">←</button>
-                        <button type="button" onClick={() => moveMonth(1)} aria-label="Next month">→</button>
-                    </div>
-                </header>
-                <div className="calendar-weekdays" aria-hidden="true">{weekDays.map((day) => <span key={day}>{day}</span>)}</div>
-                <div className="calendar-grid">
-                    {Array.from({ length: firstWeekday }, (_, index) => <span key={`blank-${index}`} />)}
-                    {Array.from({ length: daysInMonth }, (_, index) => {
-                        const date = new Date(year, month, index + 1);
-                        const isSelected = selected ? sameDay(date, selected) : false;
-                        const isToday = sameDay(date, today);
-                        return <button
-                            key={index + 1}
-                            type="button"
-                            className={`${isSelected ? 'selected ' : ''}${isToday ? 'today' : ''}`.trim()}
-                            onClick={() => choose(date)}
-                            aria-pressed={isSelected}
-                            aria-label={new Intl.DateTimeFormat('en', { dateStyle: 'full' }).format(date)}
-                        >{index + 1}</button>;
-                    })}
-                </div>
+                <DayPicker
+                    mode="single"
+                    selected={selected ?? undefined}
+                    month={visibleMonth}
+                    onMonthChange={setVisibleMonth}
+                    onSelect={(date) => date && choose(date)}
+                    showOutsideDays
+                    fixedWeeks
+                    navLayout="around"
+                    animate
+                />
                 <footer className="calendar-footer">
                     <button type="button" onClick={() => { onChange(''); setOpen(false); }}>Clear</button>
                     <button type="button" onClick={() => choose(today)}>Today</button>

@@ -1,4 +1,5 @@
 @import url('https://fonts.bunny.net/css?family=manrope:400,500,600,700,800');
+@import 'react-day-picker/style.css';
 
 :root {
     color-scheme: light;
@@ -133,21 +134,23 @@ main.shell { height: calc(100dvh - 64px); min-height: 0; display: flex; flex-dir
 .date-trigger svg { width: 16px; height: 16px; }
 .calendar-layer { position: fixed; z-index: 30; top: 50%; left: calc(50% + 285px); width: 320px; transform: translateY(-50%); }
 .calendar-popover { width: 100%; padding: 15px; color: #111; background: white; border: 1px solid #111; border-radius: 8px; box-shadow: 8px 8px 0 #111; text-transform: none; letter-spacing: normal; animation: slide-in .15s ease-out; }
-.calendar-header { display: flex; align-items: center; justify-content: space-between; padding-bottom: 10px; border-bottom: 1px solid #ddd; }
-.calendar-header > div:first-child { display: flex; align-items: baseline; gap: 6px; }
-.calendar-header span { font-size: 14px; font-weight: 800; }
-.calendar-header strong { color: #777; font-size: 10px; }
-.calendar-header > div:last-child { display: flex; gap: 4px; }
-.calendar-header button { width: 29px; height: 29px; display: grid; place-items: center; padding: 0; color: #111; background: #eee; border: 1px solid #ccc; border-radius: 5px; font-size: 15px; }
-.calendar-header button:hover { color: white; background: #111; border-color: #111; }
-.calendar-weekdays, .calendar-grid { display: grid; grid-template-columns: repeat(7, 1fr); gap: 3px; }
-.calendar-weekdays { padding: 10px 0 5px; }
-.calendar-weekdays span { color: #888; font-size: 8px; font-weight: 800; text-align: center; }
-.calendar-grid > span, .calendar-grid button { aspect-ratio: 1; }
-.calendar-grid button { display: grid; place-items: center; padding: 0; color: #333; background: transparent; border: 1px solid transparent; border-radius: 5px; font-size: 10px; font-weight: 700; }
-.calendar-grid button:hover { color: white; background: #555; }
-.calendar-grid button.today { border-color: #111; }
-.calendar-grid button.selected { color: white; background: #111; border-color: #111; }
+.calendar-popover .rdp-root { --rdp-accent-color: #111; --rdp-accent-background-color: #eee; --rdp-day-height: 36px; --rdp-day-width: 36px; --rdp-day_button-height: 32px; --rdp-day_button-width: 32px; --rdp-day_button-border-radius: 6px; --rdp-selected-border: 1px solid #111; --rdp-today-color: #111; --rdp-outside-opacity: .35; --rdp-nav_button-height: 30px; --rdp-nav_button-width: 30px; --rdp-nav-height: 42px; margin: 0; font-size: 10px; }
+.calendar-popover .rdp-months, .calendar-popover .rdp-month { width: 100%; max-width: none; }
+.calendar-popover .rdp-month_caption { align-items: center; border-bottom: 1px solid #ddd; }
+.calendar-popover .rdp-caption_label { font-size: 14px; font-weight: 800; }
+.calendar-popover .rdp-nav { gap: 5px; }
+.calendar-popover .rdp-button_previous, .calendar-popover .rdp-button_next { background: #eee; border: 1px solid #ccc; border-radius: 5px; }
+.calendar-popover .rdp-button_previous:hover, .calendar-popover .rdp-button_next:hover { color: white; background: #111; border-color: #111; }
+.calendar-popover .rdp-button_previous:hover .rdp-chevron, .calendar-popover .rdp-button_next:hover .rdp-chevron { fill: white; }
+.calendar-popover .rdp-chevron { width: 14px; fill: #111; }
+.calendar-popover .rdp-month_grid { width: 100%; margin-top: 7px; }
+.calendar-popover .rdp-weekday { color: #777; font-size: 8px; font-weight: 800; }
+.calendar-popover .rdp-day { padding: 1px; }
+.calendar-popover .rdp-day_button { margin: auto; color: #333; border: 1px solid transparent; font-size: 10px; font-weight: 700; }
+.calendar-popover .rdp-day_button:hover { color: white; background: #555; }
+.calendar-popover .rdp-selected { font-size: inherit; }
+.calendar-popover .rdp-selected .rdp-day_button { color: white; background: #111; }
+.calendar-popover .rdp-today:not(.rdp-selected) .rdp-day_button { border-color: #111; }
 .calendar-footer { display: flex; justify-content: space-between; margin-top: 10px; padding-top: 9px; border-top: 1px solid #ddd; }
 .calendar-footer button { padding: 4px 6px; color: #555; background: transparent; border: 0; font-size: 9px; font-weight: 800; }
 .calendar-footer button:hover { color: #111; text-decoration: underline; }
