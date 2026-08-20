@@ -131,8 +131,8 @@ main.shell { height: calc(100dvh - 64px); min-height: 0; display: flex; flex-dir
 .date-trigger:hover, .date-trigger.open { border-color: #111; }
 .date-trigger .placeholder { color: #888; }
 .date-trigger svg { width: 16px; height: 16px; }
-.calendar-layer { position: fixed; z-index: 30; inset: 0; display: grid; place-items: center; padding: 20px; background: rgba(0,0,0,.35); backdrop-filter: blur(2px); }
-.calendar-popover { width: min(100%, 320px); padding: 15px; color: #111; background: white; border: 1px solid #111; border-radius: 8px; box-shadow: 8px 8px 0 #111; text-transform: none; letter-spacing: normal; animation: rise .15s ease-out; }
+.calendar-layer { position: fixed; z-index: 30; top: 50%; left: calc(50% + 285px); width: 320px; transform: translateY(-50%); }
+.calendar-popover { width: 100%; padding: 15px; color: #111; background: white; border: 1px solid #111; border-radius: 8px; box-shadow: 8px 8px 0 #111; text-transform: none; letter-spacing: normal; animation: slide-in .15s ease-out; }
 .calendar-header { display: flex; align-items: center; justify-content: space-between; padding-bottom: 10px; border-bottom: 1px solid #ddd; }
 .calendar-header > div:first-child { display: flex; align-items: baseline; gap: 6px; }
 .calendar-header span { font-size: 14px; font-weight: 800; }
@@ -157,6 +157,7 @@ main.shell { height: calc(100dvh - 64px); min-height: 0; display: flex; flex-dir
 .confirm-dialog p { color: var(--muted); font-size: 12px; margin: 8px 0 23px; }
 @keyframes fade-in { from { opacity: 0; } }
 @keyframes rise { from { opacity: 0; transform: translateY(8px); } }
+@keyframes slide-in { from { opacity: 0; transform: translateX(-8px); } }
 
 @media (max-width: 1000px) {
     .task-list, .loading-list { grid-template-columns: 1fr; }
@@ -182,7 +183,11 @@ main.shell { height: calc(100dvh - 64px); min-height: 0; display: flex; flex-dir
     .card-actions { grid-column: 2; opacity: 1; justify-content: flex-end; margin-top: -5px; }
     .form-grid { grid-template-columns: 1fr; }
     .modal { max-height: calc(100dvh - 28px); overflow-y: auto; box-shadow: 7px 7px 0 #111; }
-    .calendar-layer { padding: 20px; }
+}
+
+@media (max-width: 1100px) {
+    .calendar-layer { top: auto; bottom: 18px; left: 50%; width: min(calc(100% - 32px), 360px); transform: translateX(-50%); }
+    .calendar-popover { box-shadow: 7px 7px 0 #111; animation-name: rise; }
 }
 
 @media (prefers-reduced-motion: reduce) {
